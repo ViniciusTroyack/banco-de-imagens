@@ -11,15 +11,18 @@ app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 @app.post("/upload/<filename>")
 def post_file(filename):
     
+    DIR = utils.verify_dir(filename)
+
     if not utils.is_allowed_file(filename):
         return{"message": "Unsupported Media Type"}, 415
 
-    DIR = utils.verify_dir(filename)
+    if filename in os.listdir(DIR):
+        return{"message": "File already exists "}, 409
 
     with open(f"{DIR}/{filename}", "wb") as f:
         f.write(request.data)
         
-    return {"message": "Upload realizado com sucesso!"}, 201
+    return {"message": "Upload successful"}, 201
 
 
 @app.get('/files')

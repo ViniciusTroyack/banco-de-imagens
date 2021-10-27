@@ -15,7 +15,7 @@ def verify_dir(file):
     return NEW_DIRECTORY
 
 def is_allowed_file(file):
-
+    
     ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS')
     extension = find_extension(file)
     return extension in ALLOWED_EXTENSIONS
