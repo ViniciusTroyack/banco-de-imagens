@@ -8,20 +8,21 @@ MAX_CONTENT_LENGTH = int(os.environ.get('MAX_CONTENT_LENGTH'))
 FILES_DIRECTORY = os.environ.get('FILES_DIRECTORY')
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
 
-@app.post("/upload/<filename>")
-def post_file(filename):
-    
-    DIR = utils.verify_dir(filename)
-
-    if not utils.is_allowed_file(filename):
-        return{"message": "Unsupported Media Type"}, 415
-
-    if filename in os.listdir(DIR):
-        return{"message": "File already exists "}, 409
-
-    with open(f"{DIR}/{filename}", "wb") as f:
-        f.write(request.data)
+@app.post("/upload")
+def post_file():
         
+    for file in request.files:
+
+        DIR = utils.verify_dir(request.files[file].filename)
+
+        if not utils.is_allowed_file(request.files[file].filename):
+            return{"message": "Unsupported Media Type"}, 415
+
+        if request.files[file].filename in os.listdir(DIR):
+            return{"message": "File already exists "}, 409
+
+        utils.save_file(request.files[file])
+  
     return {"message": "Upload successful"}, 201
 
 

@@ -1,4 +1,5 @@
 import os
+from flask.helpers import safe_join
 
 def find_extension(file):
     return file.split('.')[-1]
@@ -37,4 +38,12 @@ def files_list(extension=False):
         list_all.extend(files_list)
 
     return list_all
+
+def save_file(file):
+    path_to_save = verify_dir(file.filename)
+
+    path = safe_join(path_to_save, file.filename)
+    file.save(path)
+
+    return file.filename
 
