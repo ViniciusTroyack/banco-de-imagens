@@ -10,7 +10,7 @@ def verify_dir(file):
     dir = find_extension(file)
     NEW_DIRECTORY = f'{FILES_DIRECTORY}{dir}'
     
-    if not os.path.isdir(NEW_DIRECTORY):
+    if not os.path.isdir(NEW_DIRECTORY) and is_allowed_file(file):
         os.mkdir(NEW_DIRECTORY)
 
     return NEW_DIRECTORY
